@@ -1,0 +1,15 @@
+### COMMON ###
+# node modules
+node_modules
+
+# vscode
+.vscode
+
+
+### GATEWAY ###
+# compiled output
+/gateway/dist
+
+
+### SERVICE ###
+
