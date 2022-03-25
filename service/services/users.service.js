@@ -1,6 +1,7 @@
 "use strict";
 
 const DbMixin = require("../mixins/db.mixin");
+const UserMixin = require("../mixins/users.mixin");
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -13,7 +14,7 @@ module.exports = {
 	/**
 	 * Mixins
 	 */
-	mixins: [DbMixin("users")],
+	mixins: [DbMixin("users"), UserMixin],
 
 	/**
 	 * Settings
@@ -37,6 +38,21 @@ module.exports = {
 			username: "string|min:3|max:50",
 			password: "string|min:8",
 		},
+	},
+
+	/**
+	 * Action Hooks
+	 */
+	hooks: {
+		after: {
+			/**
+			 * Remove password field
+			 * @param {Context} ctx
+			 */
+			get: ["removePasswordField"],
+			list: ["removePasswordField"],
+			update: ["removePasswordField"]
+		}
 	},
 
 	/**
@@ -72,20 +88,20 @@ module.exports = {
 					username: "alifakoor",
 					password: "12345678",
 					email: "ali.fakoor13@gmail.com",
-					phone: "09108869419"
+					phone: "09108869419",
 				},
 				{
 					firstname: "Amir",
 					lastname: "Amiri",
 					username: "amir",
 					password: "12345678",
-					phone: "09352938039"
+					phone: "09352938039",
 				},
 				{
 					firstname: "Bahar",
 					lastname: "Saeidi",
 					username: "bahar",
-					password: "12345678"
+					password: "12345678",
 				},
 			]);
 		},

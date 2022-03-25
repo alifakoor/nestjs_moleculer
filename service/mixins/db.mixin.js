@@ -1,6 +1,5 @@
 "use strict";
-
-const fs = require("fs");
+const MongoAdapter = require("moleculer-db-adapter-mongo");
 const DbService = require("moleculer-db");
 
 /**
@@ -58,9 +57,6 @@ module.exports = function (collection) {
 			}
 		},
 	};
-
-	// Mongo adapter
-	const MongoAdapter = require("moleculer-db-adapter-mongo");
 
 	schema.adapter = new MongoAdapter("mongodb://localhost:27017/badesaba");
 	schema.collection = collection;
