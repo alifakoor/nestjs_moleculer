@@ -1,0 +1,46 @@
+version: "3.3"
+
+services:
+
+  gateway:
+    build: ./gateway
+    image: nestjs_moleculer_gateway
+    env_file: .env
+    ports:
+      - 3000:3000
+    depends_on:
+      - nats
+    networks:
+      - internal
+
+  service:
+    build: ./service
+    image: nestjs_moleculer_service
+    env_file: .env
+    environment:
+      SERVICES: users
+    depends_on:
+      - mongo
+      - nats
+    networks:
+      - internal
+
+  mongo:
+    image: mongo:4
+    volumes:
+      - data:/data/db
+    networks:
+      - internal
+
+  nats:
+    image: nats:2
+    networks:
+      - internal
+
+
+networks:
+  internal:
+
+volumes:
+  gateway:
+  data:

@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { ServiceBroker } from 'moleculer';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Errors, ServiceBroker } from 'moleculer';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import User from './interfaces/users.interface';
@@ -10,7 +10,7 @@ export class UsersService {
 
   constructor() {
     this.broker = new ServiceBroker({
-      transporter: 'NATS',
+      transporter: process.env.TRANSPORTER,
     });
     this.broker.start();
   }
@@ -24,7 +24,13 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User> {
-    return await this.broker.call('users.get', { id });
+    try {
+      return await this.broker.call('users.get', { id });
+    } catch (e) {
+      if (e.code === 404) {
+        return undefined;
+      }
+    }
   }
 
   async findByUsername(username: string): Promise<User> {

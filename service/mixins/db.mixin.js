@@ -58,7 +58,7 @@ module.exports = function (collection) {
 		},
 	};
 
-	schema.adapter = new MongoAdapter("mongodb://localhost:27017/badesaba");
+	schema.adapter = new MongoAdapter(process.env.MONGO_URI);
 	schema.collection = collection;
 
 	return schema;
